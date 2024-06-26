@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 var appTheme = ThemeData(
   fontFamily: GoogleFonts.nunito().fontFamily,
   bottomAppBarTheme: const BottomAppBarTheme(
-    color: Colors.black87,
+    color: Color.fromARGB(221, 239, 160, 160),
   ),
   brightness: Brightness.dark,
   textTheme: const TextTheme(
@@ -18,8 +18,8 @@ var appTheme = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     titleMedium: TextStyle(
-      color: Colors.grey,
+      color: Colors.white,
     ),
   ),
-  buttonTheme: const ButtonThemeData(),
+  buttonTheme: const ButtonThemeData(buttonColor: Colors.pink),
 );

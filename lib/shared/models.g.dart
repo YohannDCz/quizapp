@@ -74,7 +74,7 @@ Map<String, dynamic> _$TopicToJson(Topic instance) => <String, dynamic>{
 Report _$ReportFromJson(Map<String, dynamic> json) => Report(
       uid: json['uid'] as String? ?? '',
       topics: json['topics'] as Map<String, dynamic>? ?? const {},
-      total: json['total'] as int? ?? 0,
+      total: (json['total'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$ReportToJson(Report instance) => <String, dynamic>{

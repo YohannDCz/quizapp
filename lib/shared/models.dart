@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'models.g.dart';
 
@@ -15,9 +16,19 @@ class Option {
 class Question {
   String text;
   List<Option> options;
-  Question({this.options = const [], this.text = ''});
-  factory Question.fromJson(Map<String, dynamic> json) =>
-      _$QuestionFromJson(json);
+  @JsonKey(ignore: true)
+  late List<Option> shuffledOptions;
+
+  Question({this.options = const [], this.text = ''}) {
+    shuffledOptions = List.from(options)..shuffle();
+  }
+
+  factory Question.fromJson(Map<String, dynamic> json) {
+    var question = _$QuestionFromJson(json);
+    question.shuffledOptions = List.from(question.options)..shuffle();
+    return question;
+  }
+
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 }
 
@@ -69,4 +80,12 @@ class Report {
   Report({this.uid = '', this.topics = const {}, this.total = 0});
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);
   Map<String, dynamic> toJson() => _$ReportToJson(this);
+}
+
+
+class PointOfInterest {
+  final String id;
+  final LatLng location;
+
+  PointOfInterest({required this.id, required this.location});
 }

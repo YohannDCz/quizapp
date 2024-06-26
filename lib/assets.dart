@@ -101,10 +101,10 @@ final List<Quiz> quizzes = [
       Question(
         text: 'À votre avis, quel est le sexe de ces deux individus ?',
         options: [
-          Option(value: 'Deux femmes', correct: false),
+          Option(value: 'Deux femmes', correct: true),
           Option(value: 'Deux hommes', correct: false),
           Option(value: 'Une femme et un homme', correct: false),
-          Option(value: 'On ne peut pas savoir.', correct: true),
+          Option(value: 'On ne peut pas savoir.', correct: false),
         ],
       ),
       Question(

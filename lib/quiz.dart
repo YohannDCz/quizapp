@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/assets.dart';
 import 'package:quizapp/map.dart';
@@ -8,28 +8,47 @@ import 'package:quizapp/provider.dart';
 import 'package:quizapp/shared/models.dart';
 import 'package:quizapp/shared/progress_bar.dart';
 
-
-
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, required this.quizId});
   final String quizId;
 
   @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  @override
+  initState() {
+    super.initState();
+    Provider.of<QuizState>(context, listen: false).score = 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var score = Provider.of<QuizState>(context).score;
+
     return ChangeNotifierProvider(
       create: (_) => QuizState(),
       child: Builder(
         builder: (context) {
           var state = Provider.of<QuizState>(context);
-          var quiz = quizzes.firstWhere((quiz) => quiz.id == quizId);
+          var quiz = quizzes.firstWhere((quiz) => quiz.id == widget.quizId);
 
           return Scaffold(
             appBar: AppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text("$score/100", style: Theme.of(context).textTheme.headlineMedium),
+                )
+              ],
               title: AnimatedProgressbar(value: state.progress),
               leading: IconButton(
-                icon: const Icon(FontAwesomeIcons.xmark),
-                onPressed: () => Navigator.pop(context),
-              ),
+                  icon: const Icon(FontAwesomeIcons.xmark),
+                  onPressed: () {
+                    Provider.of<QuizState>(context, listen: false).resetScore();
+                    Navigator.pop(context);
+                  }),
             ),
             body: PageView.builder(
               physics: const NeverScrollableScrollPhysics(),
@@ -40,7 +59,7 @@ class QuizScreen extends StatelessWidget {
                 if (idx == 0) {
                   return StartPage(quiz: quiz);
                 } else if (idx == quiz.questions.length + 1) {
-                  return CongratsPage(quiz: quiz);
+                  return CongratsPage(quiz: quiz, score: score);
                 } else {
                   return QuestionPage(question: quiz.questions[idx - 1]);
                 }
@@ -59,20 +78,35 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<QuizState>(context);
+    var state = Provider.of<QuizState>(context, listen: false);
 
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(quiz.title, style: Theme.of(context).textTheme.headlineLarge),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.pink,
+            ),
+            child: Column(
+              children: [
+                Text(toBeginningOfSentenceCase(quiz.title) ?? "", style: Theme.of(context).textTheme.headlineLarge),
+              ],
+            ),
+          ),
           const Divider(),
-          Expanded(child: Text(quiz.description)),
+          Expanded(child: Text('${quiz.description}\nAttention une mauvaise réponse vous fera perdre 5 points, une bonne vous en fera gagner 10 !')),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  textStyle: const TextStyle(color: Colors.white),
+                ),
                 onPressed: state.nextPage,
                 label: const Text('Démarrer le Quiz!'),
                 icon: const Icon(Icons.poll),
@@ -85,10 +119,11 @@ class StartPage extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CongratsPage extends StatelessWidget {
   final Quiz quiz;
-  const CongratsPage({super.key, required this.quiz});
-
+  CongratsPage({super.key, required this.quiz, this.score});
+  int? score;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -97,7 +132,7 @@ class CongratsPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Félicitations, vous avez complété le ${quiz.title}',
+            'Félicitations, vous avez complété le ${quiz.title} et vous avez gagné $score points !',
             textAlign: TextAlign.center,
           ),
           const Divider(),
@@ -110,6 +145,7 @@ class CongratsPage extends StatelessWidget {
             icon: const Icon(FontAwesomeIcons.check),
             label: const Text('D\'accord !'),
             onPressed: () {
+              Provider.of<QuizState>(context, listen: false).score = 0;
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const MapScreen()),
@@ -136,18 +172,22 @@ class QuestionPage extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
+            color: Colors.pink,
             padding: const EdgeInsets.all(16),
             alignment: Alignment.center,
-            child: Text(question.text),
+            child: Text(
+              question.text,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
         ),
         Container(
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: question.options.map((opt) {
+            children:  question.shuffledOptions.map((opt) {
               return Container(
-                height: 90,
+                height: 100,
                 margin: const EdgeInsets.only(bottom: 10),
                 color: Colors.black26,
                 child: InkWell(
@@ -212,7 +252,10 @@ class QuestionPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   if (correct) {
+                    Provider.of<QuizState>(context, listen: false).score += 10;
                     state.nextPage();
+                  } else {
+                    Provider.of<QuizState>(context, listen: false).score -= 5;
                   }
                   Navigator.pop(context);
                 },

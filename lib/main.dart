@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quizapp/home.dart';
+import 'package:quizapp/provider.dart';
 import 'package:quizapp/theme.dart';
 
 void main() {
@@ -11,9 +13,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appTheme,
-      home: const HomeScreen(),
+    return ChangeNotifierProvider(
+      create: (context) => QuizState(),
+      child: MaterialApp(
+        theme: appTheme,
+        home: const HomeScreen(),
+      ),
     );
   }
 }
