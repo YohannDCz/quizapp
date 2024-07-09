@@ -40,7 +40,7 @@ final List<Quiz> quizzes = [
         options: [
           Option(value: 'Ils ne portaient pas de sous-vêtements', correct: false),
           Option(value: 'Ils avaient tous un chapeau', correct: false),
-          Option(value: 'Ils portaient des chaussures', correct: true, detail: 'On peut voir des semelles cloutées et lacées autour de la cheville. Les moulages ont permis de montrer que les romains portaient des chaussures et qu\'ils les attachaient avec des clous.'),
+          Option(value: 'Ils portaient des chaussures', correct: true, detail: 'On peut voir des semelles cloutées et lacées autour de la cheville. Les moulages ont permis de démontrer que les romains portaient des chaussures, les semelles étaient recouvertes de clous pour retarder leurs usures.'),
           Option(value: 'Ils ne portaient pas d\'habits', correct: false),
         ],
       ),
@@ -146,7 +146,7 @@ final List<Quiz> quizzes = [
       Question(
         text: 'Que fait la victime couchée sur le côté gauche ?',
         options: [
-          Option(value: 'Elle se protège les yeux et le bras et la main sont en une attitude comme si elle tenait un tissu sur la bouche', correct: true),
+          Option(value: 'Elle se protège', correct: true, detail: "Son attitude montre qu'elle se protège la bouche avec un tissu."),
           Option(value: 'Elle regarde le ciel en priant', correct: false),
           Option(value: 'Elle semble dormir paisiblement', correct: false),
           Option(value: 'Elle se brosse les dents', correct: false),
@@ -202,17 +202,26 @@ final List<Quiz> quizzes = [
         options: [
           Option(value: 'Carlo Levi', correct: false),
           Option(value: 'Giuseppe Fiorelli', correct: true),
-          Option(value: 'Amadeo Maiuri', correct: false),
+          Option(value: 'Amedeo Maiuri', correct: false),
           Option(value: 'Pompeo Sarnelli', correct: false),
         ],
       ),
       Question(
         text: 'Comment la technique de moulage a-t-elle été réalisée pour capturer les formes des victimes ?',
         options: [
-          Option(value: 'En remplissant les cavités laissées par les corps avec du plâtre', correct: true),
+          Option(value: 'En remplissant les cavités laissées par les corps avec du plâtre', correct: true, detail: 'Grâce à une nouvelle technique de fouille: Celle des fouiulles horizontales. Les cavités creuses des moulages ont pu être remplies de plâtre.'),
           Option(value: 'En sculptant directement des statues à partir de descriptions', correct: false),
           Option(value: 'En moulant les cavités laissées par les corps avec de l\'argile.', correct: false),
           Option(value: 'En taillant de la pierre de roche.', correct: false),
+        ],
+      ),
+      Question(
+        text: 'Pourquoi les moulages sont-ils important pour les archéologues ?',
+        options: [
+          Option(value: 'Ils montrent les dernières expressions des victimes', correct: true),
+          Option(value: 'Ils aident à comprendre les vêtements et les accessoires de l\'époque', correct: false),
+          Option(value: 'Ils fournissent des détails sur la vie quotidienne de pompéi', correct: false),
+          Option(value: 'Toute ces réponses', correct: false),
         ],
       ),
       Question(
@@ -246,16 +255,16 @@ final List<Quiz> quizzes = [
         text: 'À votre avis, les corps ont-ils été déplacés par les archéologues ?',
         options: [
           Option(value: 'Oui, pour faire de la place au verger.', correct: false),
-          Option(value: 'Non, c\'est le seul endroit où les moulages n\'ont pas été déplacés du lieu de leur découverte.', correct: true, detail: 'Cette décision vient du responsable des fouilles Amedeo Maiuri.'),
+          Option(value: 'Non, car ils les auraient détruit en les déplaçant.', correct: true),
           Option(value: 'Non car leurs déplacements aurait été considéré comme irrespectueux envers les victimes.', correct: false),
-          Option(value: 'Oui pour pouvoir fouiller sans les abimer', correct: false),
+          Option(value: 'Oui, ils n\'ont pas été trouvés ici mais 3,5m plus haut.', correct: false, detail: 'Les corps ont été trouvés ailleurs, il s\'agit des fuyard ayant échappé à la premiére partie de l\'éruption.'),
         ],
       ),
       Question(
         text: 'À votre avis, pour quelle raison sont-ils tous réunis à cet endroit ?',
         options: [
           Option(value: 'Ces personnes se sont allongées dans le jardin et sont morts dans cette position', correct: false),
-          Option(value: 'Ces personnes fuyaient vers Porta Nocera et vers le port pour échapper à cet événement.', correct: true, detail: 'En effet, le port est à proximité.'),
+          Option(value: 'Ces personnes fuyaient vers Porta Nocera et vers le port pour échapper à cet événement.', correct: true, detail: 'La Porta Nocera est celle située la plus proche du port'),
           Option(value: 'Ces personnes se sont abrités de l\'éruption sous les arbres du verger.', correct: false),
           Option(value: 'C\'est un cimetière antique.', correct: false),
         ],
